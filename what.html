@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Тест на стиль</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #669bbc;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .style-quiz {
+            background: #FFF3B0;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        h2 {
+            color: #003049;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #quiz-questions {
+            margin-bottom: 20px;
+        }
+
+        #submit-btn {
+            display: block;
+            width: 200px;
+            padding: 10px;
+            margin: 20px auto;
+            background: #9E2A2B;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #submit-btn:hover {
+            background: #7a1f20;
+        }
+
+        #quiz-result {
+            padding: 20px;
+            background: #FFF3B0;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: 5px solid #669bbc;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .options label {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .options input {
+            margin-right: 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            padding: 8px 15px;
+            background: #9E2A2B;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover {
+            background: #7a1f20;
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .style-details {
+            background: #669bbc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .style-details p {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="style-quiz">
+        <h2>Какой у вас стиль?</h2>
+        <div id="quiz-questions">
+            <!-- Вопросы будут подгружаться здесь -->
+        </div>
+        <div class="navigation">
+            <button id="prev-btn" class="nav-btn" disabled>Назад</button>
+            <button id="next-btn" class="nav-btn">Далее</button>
+        </div>
+        <button id="submit-btn" style="display:none;">Узнать результат</button>
+        <div id="quiz-result" style="display:none;">
+            <!-- Результат появится здесь -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Ваш идеальный наряд для вечера?",
+                options: [
+                    { text: "Классическое черное платье", style: "minimalism" },
+                    { text: "Яркий комбинезон с аксессуарами", style: "boho" },
+                    { text: "Кожаные брюки и крутая блуза", style: "rock" },
+                    { text: "Уникальное платье с асимметричными линиями", style: "avantgarde" },
+                    { text: "Oversize-рубашка с джинсами и кроссовками", style: "streetwear" }
+                ]
+            },
+            {
+                question: "Какой аксессуар вы предпочитаете?",
+                options: [
+                    { text: "Минималистичные серьги", style: "minimalism" },
+                    { text: "Широкий браслет с этническим узором", style: "boho" },
+                    { text: "Кожаный ремень с заклепками", style: "rock" },
+                    { text: "Необычные серьги в форме геометрических фигур", style: "avantgarde" },
+                    { text: "Яркая бейсболка с логотипом", style: "streetwear" }
+                ]
+            },
+            {
+                question: "Какой ваш любимый цвет?",
+                options: [
+                    { text: "Нежные пастельные оттенки", style: "minimalism" },
+                    { text: "Яркие и насыщенные цвета", style: "boho" },
+                    { text: "Темные и глубокие тона", style: "rock" },
+                    { text: "Неоновый или кислотный цвет", style: "avantgarde" },
+                    { text: "Хаки и ярко-синий", style: "streetwear" }
+                ]
+            },
+            {
+                question: "Какой тип обуви вам больше нравится?",
+                options: [
+                    { text: "Элегантные туфли", style: "minimalism" },
+                    { text: "Сандалии с бахромой", style: "boho" },
+                    { text: "Ботинки на толстой подошве", style: "rock" },
+                    { text: "Обувь с необычной формой или конструкцией", style: "avantgarde" },
+                    { text: "Кроссовки с ярким дизайном", style: "streetwear" }
+                ]
+            },
+            {
+                question: "Какой стиль укладки волос вам ближе?",
+                options: [
+                    { text: "Простая гладкая прическа", style: "minimalism" },
+                    { text: "Небрежные локоны", style: "boho" },
+                    { text: "Стильная небрежность с текстурой", style: "rock" },
+                    { text: "Экстравагантная прическа с яркими цветами", style: "avantgarde" },
+                    { text: "Небрежная укладка с текстурой и косичками", style: "streetwear" }
+                ]
+            },
+            {
+                question: "Какой головной убор вы бы выбрали?",
+                options: [
+                    { text: "Классическую фетровую шляпу", style: "minimalism" },
+                    { text: "Широкополую шляпу с цветами", style: "boho" },
+                    { text: "Кожаную кепку-восьмиклинку", style: "rock" },
+                    { text: "Конструктивный головной убор необычной формы", style: "avantgarde" },
+                    { text: "Бейсболку или бини с логотипом", style: "streetwear" }
+                ]
+            },
+            {
+                question: "Ваш подход к макияжу?",
+                options: [
+                    { text: "Естественный nude-макияж", style: "minimalism" },
+                    { text: "Яркие акценты (стрелки, блеск)", style: "boho" },
+                    { text: "Дымчатые глаза и темная помада", style: "rock" },
+                    { text: "Экспериментальные техники и графичные линии", style: "avantgarde" },
+                    { text: "Минимум макияжа или яркие неоновые акценты", style: "streetwear" }
+                ]
+            },
+            {
+                question: "Какой сумкой вы пользуетесь?",
+                options: [
+                    { text: "Минималистичной кожанной сумкой-портфелем", style: "minimalism" },
+                    { text: "Плетеной сумкой с бахромой", style: "boho" },
+                    { text: "Рюкзаком с металлическими деталями", style: "rock" },
+                    { text: "Конструктивной сумкой необычной геометрии", style: "avantgarde" },
+                    { text: "Объемным рюкзаком или поясной сумкой", style: "streetwear" }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        const userAnswers = {};
+
+        function displayQuestion(index) {
+            const question = questions[index];
+            let html = `<div class="question">
+                            <h3>${question.question}</h3>
+                            <div class="options">`;
+
+            question.options.forEach((option) => {
+                const checked = userAnswers[index] === option.style ? 'checked' : '';
+                html += `<label>
+                            <input type="radio" name="q${index}" value="${option.style}" ${checked}>
+                            ${option.text}
+                        </label>`;
+            });
+
+            html += `</div></div>`;
+            document.getElementById("quiz-questions").innerHTML = html;
+
+            // Обновляем состояние кнопок навигации
+            document.getElementById("prev-btn").disabled = index === 0;
+            document.getElementById("next-btn").style.display = index === questions.length - 1 ? "none" : "block";
+            document.getElementById("submit-btn").style.display = index === questions.length - 1 ? "block" : "none";
+        }
+
+        function saveAnswer() {
+            const selectedOption = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+            if (selectedOption) {
+                userAnswers[currentQuestion] = selectedOption.value;
+            }
+        }
+
+        function calculateResult() {
+            const styleCounts = {
+                minimalism: 0,
+                boho: 0,
+                rock: 0,
+                avantgarde: 0,
+                streetwear: 0
+            };
+
+            Object.values(userAnswers).forEach(style => {
+                if (styleCounts.hasOwnProperty(style)) {
+                    styleCounts[style]++;
+                }
+            });
+
+            const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b);
+            const styles = {
+                minimalism: {
+                    title: "Минимализм",
+                    description: "Ваш стиль — это элегантная простота. Чистые линии, лаконичные формы и нейтральные цвета - основа вашего гардероба.",
+                    colors: ["белый", "черный", "бежевый"],
+                    brands: ["COS", "The Row", "Jil Sander"]
+                },
+                boho: {
+                    title: "Бохо-шик",
+                    description: "Вы — душа творческой тусовки! Ваш стиль - это смелые принты, натуральные ткани и многослойность.",
+                    colors: ["терракотовый", "бирюзовый", "горчичный"],
+                    brands: ["Free People", "Ulla Johnson", "Faithfull the Brand"]
+                },
+                rock: {
+                    title: "Рок-шик",
+                    description: "Ваш стиль — это вызов условностям. Кожа, деним и смелые аксессуары - ваши must-have элементы.",
+                    colors: ["черный", "бордовый", "металлик"],
+                    brands: ["Balmain", "Alexander McQueen", "AllSaints"]
+                },
+                avantgarde: {
+                    title: "Авангард",
+                    description: "Вы мыслите нестандартно! Ваш стиль — это смелые эксперименты с формой и текстурой.",
+                    colors: ["неоновый", "серебристый", "кислотный"],
+                    brands: ["Iris van Herpen", "Rick Owens", "Comme des Garçons"]
+                },
+                streetwear: {
+                    title: "Стритвир",
+                    description: "Вы в тренде уличной моды! Комфорт и актуальные тенденции - ваш главный приоритет.",
+                    colors: ["хаки", "ярко-синий", "красный"],
+                    brands: ["Supreme", "Off-White", "A-Cold-Wall"]
+                }
+            };
+
+            const resultDiv = document.getElementById("quiz-result");
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `
+                <h3>Ваш стиль: ${styles[dominantStyle].title}</h3>
+                <p>${styles[dominantStyle].description}</p>
+                <div class="style-details">
+                    <p><strong>Ваши цвета:</strong> ${styles[dominantStyle].colors.join(", ")}</p>
+                    <p><strong>Рекомендуемые бренды:</strong> ${styles[dominantStyle].brands.join(", ")}</p>
+                </div>
+            `;
+        }
+
+        // Инициализация теста
+        displayQuestion(currentQuestion);
+
+        // Обработчики событий для кнопок
+        document.getElementById("prev-btn").addEventListener("click", () => {
+            saveAnswer();
+            currentQuestion--;
+            displayQuestion(currentQuestion);
+        });
+
+        document.getElementById("next-btn").addEventListener("click", () => {
+            saveAnswer();
+            currentQuestion++;
+            displayQuestion(currentQuestion);
+        });
+
+        document.getElementById("submit-btn").addEventListener("click", () => {
+            saveAnswer();
+            calculateResult();
+        });
+    </script>
+</body>
+
+</html>
